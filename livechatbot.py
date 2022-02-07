@@ -86,6 +86,7 @@ def livechatFilter(youtube,upcomingLC,nextpagetoken=None):
         livechatresponse = livechatrequest.execute()
     #print(livechatresponse)
     #print('upcoming broadcast messages')
+    millis = livechatResponse['pollingIntervalMillis']
     nextpagetoken = livechatresponse.get('nextPageToken','')
     for item in livechatresponse['items']:
         message = item['snippet']['textMessageDetails']['messageText']
@@ -98,7 +99,7 @@ def livechatFilter(youtube,upcomingLC,nextpagetoken=None):
                                                                 id=messageID
                                                             )
                 deleteRequest.execute()
-                print('deleted', message)
+                print('Deleted a Message', message)
             except Exception as e:
                 print(e, 'something went wrong')
             
@@ -107,10 +108,10 @@ def livechatFilter(youtube,upcomingLC,nextpagetoken=None):
 
     if nextpagetoken:
         print('Active')
-        time.sleep(5)
+        time.sleep(millis)
         livechatFilter(youtube,upcomingLC,nextpagetoken=nextpagetoken)
     else:
-        print('Done')
+        print('Youtube Livechat Bot Completed. Chat Finished')
 
 if __name__ == "__main__":
     youtube, upcomingLC = getLiveChat()
